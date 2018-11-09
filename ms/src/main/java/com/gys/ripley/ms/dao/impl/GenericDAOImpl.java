@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
+import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
 
 import org.hibernate.Criteria;
@@ -25,7 +26,7 @@ public abstract class GenericDAOImpl implements GenericDAO{
 	@Autowired
 	public SessionFactory sessionFactory;
 	
-	@Autowired
+	@PersistenceContext
 	private EntityManager entityManager;
 	
 	@Override
