@@ -38,7 +38,7 @@ public class AppInitializer {
 
 	private AnnotationConfigWebApplicationContext getContext() {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-		context.setConfigLocation("pe.com.mibanco.indicadores.indicadoresws.configuracion");
+		context.setConfigLocation("com.gys.ripley.ms.configuration");
 		return context;
 	}
 }

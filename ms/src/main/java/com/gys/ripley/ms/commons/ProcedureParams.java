@@ -1,19 +1,29 @@
 package com.gys.ripley.ms.commons;
 
-import javax.persistence.ParameterMode;
 
 public class ProcedureParams {
 	
 	private Object value;
-	private ParameterMode paramMode;
 	private Class<?> clazz;
 	private int parameterOrder;
+	private String varNameOut;
 	
-	public ProcedureParams(Object value, ParameterMode paramMode, Class<?> clazz, int parameterOrder) {
+	public static final Integer IN = 0;
+	public static final Integer OUT = 1;
+	
+	public ProcedureParams(Object value, Class<?> clazz, int parameterOrder) {
+		init( value, clazz, parameterOrder, null);
+	}
+	
+	public ProcedureParams(Object value, Class<?> clazz, int parameterOrder, String varNameOut) {
+		init( value, clazz, parameterOrder, varNameOut);
+	}
+	
+	public void init(Object value, Class<?> clazz, int parameterOrder, String varNameOut) {
 		this.setValue(value);
-		this.setParamMode(paramMode);
 		this.setClazz(clazz);
 		this.setParameterOrder(parameterOrder);
+		this.varNameOut = varNameOut;
 	}
 
 	public Object getValue() {
@@ -22,14 +32,6 @@ public class ProcedureParams {
 
 	public void setValue(Object value) {
 		this.value = value;
-	}
-
-	public ParameterMode getParamMode() {
-		return paramMode;
-	}
-
-	public void setParamMode(ParameterMode paramMode) {
-		this.paramMode = paramMode;
 	}
 
 	public Class<?> getClazz() {
@@ -46,6 +48,14 @@ public class ProcedureParams {
 
 	public void setParameterOrder(int parameterOrder) {
 		this.parameterOrder = parameterOrder;
+	}
+
+	public String getVarNameOut() {
+		return varNameOut;
+	}
+
+	public void setVarNameOut(String varNameOut) {
+		this.varNameOut = varNameOut;
 	}
 	
 	

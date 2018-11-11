@@ -9,6 +9,10 @@ public class ManifiestoDTO extends ResponseBaseDTO{
 	private String pRutDestino;
 	private Double pManifiestoId;
 	
+	public ManifiestoDTO() {
+		super();
+	}
+	
 	public Double getpSucOrigId() {
 		return pSucOrigId;
 	}

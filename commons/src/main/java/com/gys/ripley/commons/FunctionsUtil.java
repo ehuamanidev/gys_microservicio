@@ -1,4 +1,4 @@
-package com.gys.ripley.ms.commons;
+package com.gys.ripley.commons;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -40,8 +40,7 @@ public class ManifiestoController extends BaseController  {
 		try {
 			return manifiestoService.crearManifiesto(dto);
 		} catch ( DataBaseException e ) {
-			dto.setpErrCode(e.getCod());
-			dto.setpErrMsg(e.getMessage());
+			dto.errorException(e.getCod(), e.getMessage());
 		}
 		
 		return dto;

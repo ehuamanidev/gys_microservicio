@@ -3,20 +3,34 @@ package com.gys.ripley.ms.commons;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.ParameterMode;
+import static com.gys.ripley.commons.FunctionsUtil.*;
 
 public class ProcedureUtil {
 	
 	private String procedureName;
-	private List<ProcedureParams> procedureParams;
+	private List<ProcedureParams> procedureParamsOut;
+	private List<ProcedureParams> procedureParamsIn;
 	
 	public ProcedureUtil(String procedureName) {
 		this.procedureName = procedureName;
-		this.procedureParams = new ArrayList<>();
+		this.procedureParamsOut = new ArrayList<>();
+		this.procedureParamsIn = new ArrayList<>();
 	}
 	
-	public void addParamProcedure ( Object value, ParameterMode paramMode, Class<?> clazz, int parameterOrder ) {
-		procedureParams.add( new ProcedureParams(value, paramMode, clazz, parameterOrder));
+	public void addParamProcedureInt ( Object value, Integer paramMode, Class<?> clazz, int parameterOrder ) {
+		procedureParamsIn.add( new ProcedureParams(value, clazz, parameterOrder) );
+	}
+	
+	public void addParamProcedureOut ( Object value, Integer paramMode, Class<?> clazz, int parameterOrder, String varNameOut ) {
+		procedureParamsOut.add( new ProcedureParams(value, clazz, parameterOrder, varNameOut) );
+	}
+	
+	public boolean hasParams() {
+		return !isEmpty(procedureParamsIn) || hasParamsOut(); 
+	}
+	
+	public boolean hasParamsOut() {
+		return !isEmpty(procedureParamsOut);
 	}
 	
 	public String getProcedureName() {
@@ -27,12 +41,20 @@ public class ProcedureUtil {
 		this.procedureName = procedureName;
 	}
 
-	public List<ProcedureParams> getProcedureParams() {
-		return procedureParams;
+	public List<ProcedureParams> getProcedureParamsOut() {
+		return procedureParamsOut;
 	}
 
-	public void setProcedureParams(List<ProcedureParams> procedureParams) {
-		this.procedureParams = procedureParams;
+	public void setProcedureParamsOut(List<ProcedureParams> procedureParams) {
+		this.procedureParamsOut = procedureParams;
+	}
+
+	public List<ProcedureParams> getProcedureParamsIn() {
+		return procedureParamsIn;
+	}
+
+	public void setProcedureParamsIn(List<ProcedureParams> procedureParamsIn) {
+		this.procedureParamsIn = procedureParamsIn;
 	}
 	
 }

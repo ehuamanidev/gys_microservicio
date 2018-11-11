@@ -1,8 +1,19 @@
 package com.gys.ripley.ms.dto;
 
+import static com.gys.ripley.commons.Constant.*;
+
 public class ResponseBaseDTO {
 	private Integer pErrCode;
 	private String pErrMsg;
+	
+	public ResponseBaseDTO() {
+		errorException( NO_ERROR , "" );
+	}
+	
+	public void errorException( Integer pErrCode,  String pErrMsg) {
+		this.pErrCode = pErrCode;
+		this.pErrMsg = pErrMsg;
+	}
 	
 	public String getpErrMsg() {
 		return pErrMsg;
