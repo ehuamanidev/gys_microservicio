@@ -14,4 +14,5 @@ public interface GenericDAO {
 	
 	public void ejecutarProcedimiento( ProcedureUtil procedureUtil ) throws DataBaseException;
 
+	public void ejecutarProcedimientoConCursor( ProcedureUtil procedureUtil ) throws DataBaseException;
 }

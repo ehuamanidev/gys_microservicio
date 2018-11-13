@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gys.ripley.commons.SwaggerApiMessages;
 import com.gys.ripley.ms.dto.ManifiestoDTO;
+import com.gys.ripley.ms.dto.ManifiestoInRO;
+import com.gys.ripley.ms.dto.ManifiestoListOutRO;
 import com.gys.ripley.ms.exception.DataBaseException;
 import com.gys.ripley.ms.services.ManifiestoService;
 
@@ -33,7 +35,9 @@ public class ManifiestoController extends BaseController  {
 			@ApiResponse(code = 400, message = SwaggerApiMessages.MESSAGE_400),
 			@ApiResponse(code = 401, message = SwaggerApiMessages.MESSAGE_401),
 			@ApiResponse(code = 404, message = SwaggerApiMessages.MESSAGE_404) })
-	@RequestMapping(value = "/crear_manifiesto/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = "/crear_manifiesto/", 
+					method = RequestMethod.POST, 
+					produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ManifiestoDTO listaPlanAccion(@RequestBody ManifiestoDTO dto, HttpServletResponse response,
 			HttpServletRequest request){
 		
@@ -44,5 +48,26 @@ public class ManifiestoController extends BaseController  {
 		}
 		
 		return dto;
+	}
+	
+	
+	@ApiOperation(value = "Permite seleccionar un manifiesto.", response = ManifiestoListOutRO.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Información obtenida con éxito"),
+			@ApiResponse(code = 400, message = SwaggerApiMessages.MESSAGE_400),
+			@ApiResponse(code = 401, message = SwaggerApiMessages.MESSAGE_401),
+			@ApiResponse(code = 404, message = SwaggerApiMessages.MESSAGE_404) })
+	@RequestMapping(value = "/manifiesto_sel/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ManifiestoListOutRO listManifiestoOutRO(@RequestBody ManifiestoInRO dto, HttpServletResponse response,
+			HttpServletRequest request){
+		
+		ManifiestoListOutRO manifiesto = new ManifiestoListOutRO();
+		
+		try {
+			manifiesto = manifiestoService.selManifiesto(dto);
+		} catch ( DataBaseException e ) {
+			manifiesto.errorException(e.getCod(), e.getMessage());
+		}
+		
+		return manifiesto;
 	}
 }

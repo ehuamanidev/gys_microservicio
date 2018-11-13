@@ -27,8 +27,10 @@
 		<jjwt.version>0.6.0</jjwt.version>
 		<swagger.version>2.2.2</swagger.version>
 		<commons-lang3.version>3.4</commons-lang3.version>
-		<org.hibernate>4.3.6.Final</org.hibernate>
-		<hb.manager>4.3.6.Final</hb.manager>
+<!-- 		<org.hibernate>4.3.6.Final</org.hibernate> -->
+		<org.hibernate>5.1.0.Final</org.hibernate>
+		<hb.manager>5.0.2.Final</hb.manager>
+<!-- 		<hb.manager>4.3.6.Final</hb.manager> -->
 		<javassist>3.18.2-GA</javassist>
 	</properties>
 
@@ -245,6 +247,11 @@
 				<configuration>
 					<warSourceDirectory>src/main/webapp</warSourceDirectory>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
 			<plugin>
