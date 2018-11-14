@@ -15,6 +15,11 @@ public class CommonsException extends Exception{
 		this.setMessage(err.getErrorMessage());
 		this.setEx(ex);
 	}
+	
+	public CommonsException( Integer cod, Exception ex ) {
+		this.setCod(cod);
+		this.setEx(ex);
+	}
 
 	public String getMessage() {
 		return message;
