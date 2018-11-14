@@ -52,6 +52,8 @@ public abstract class GenericDAOImpl implements GenericDAO {
 	}
 
 	public void ejecutarProcedimientoConCursor(ProcedureUtil procedureUtil) throws DataBaseException {
+		
+		Connection cnx = null;
 		try {
 
 			String procedure = "CALL " + join(MsConfig.SCHEMA_BD.getValue(), procedureUtil.getProcedureName());
@@ -62,7 +64,7 @@ public abstract class GenericDAOImpl implements GenericDAO {
 			}
 			procedure = join(procedure, "(", params, ")");
 
-			Connection cnx = sessionFactory.getSessionFactoryOptions().getServiceRegistry()
+			cnx = sessionFactory.getSessionFactoryOptions().getServiceRegistry()
 					.getService(ConnectionProvider.class).getConnection();
 			
 			CallableStatement cst = cnx.prepareCall(procedure);
@@ -70,7 +72,7 @@ public abstract class GenericDAOImpl implements GenericDAO {
 			cst.execute();
 			processOutParams( cst, procedureUtil );
 			
-
+			cnx.close();
 		} catch (Exception e) {
 			throw new DataBaseException(1, e.getMessage());
 		}

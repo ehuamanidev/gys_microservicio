@@ -12,12 +12,12 @@ import com.gys.ripley.ms.exception.DataBaseException;
 import com.gys.ripley.ms.services.ManifiestoService;
 
 @Service
-@Transactional
 public class ManifiestoServiceImpl implements ManifiestoService{
 	
 	@Autowired
 	private ManifiestoDAO manifiestoDao;
 	
+	@Transactional
 	public ManifiestoDTO crearManifiesto(ManifiestoDTO dto) throws DataBaseException{
 		return manifiestoDao.crearManifiesto(dto);
 	} 
