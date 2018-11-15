@@ -5,6 +5,7 @@ import com.gys.ripley.ms.commons.ProcedureUtil;
 import com.gys.ripley.ms.dto.ManifiestoDTO;
 import com.gys.ripley.ms.dto.ManifiestoListOutRO;
 import com.gys.ripley.ms.dto.ManifiestoOutRO;
+import com.gys.ripley.ms.exception.DataBaseException;
 
 import static com.gys.ripley.commons.FunctionsUtil.*;
 
@@ -52,9 +53,12 @@ public class ManifiestoFacade {
 					
 				}
 				rs.close();
+				procedureUtil.closeSession();
 				
 			} catch (SQLException e) {
 				new CommonsException(e.getErrorCode(), e);
+			} catch (DataBaseException e) {
+				new CommonsException(e.getCod(), e);
 			}
 			
 			manifiestoDTO.setManifiestos(manifiestoOutRo);

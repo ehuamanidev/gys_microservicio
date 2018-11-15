@@ -15,6 +15,7 @@ import javax.persistence.StoredProcedureQuery;
 
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,7 @@ public abstract class GenericDAOImpl implements GenericDAO {
 	public void ejecutarProcedimientoConCursor(ProcedureUtil procedureUtil) throws DataBaseException {
 		
 		Connection cnx = null;
+		
 		try {
 
 			String procedure = "CALL " + join(MsConfig.SCHEMA_BD.getValue(), procedureUtil.getProcedureName());
@@ -63,19 +65,20 @@ public abstract class GenericDAOImpl implements GenericDAO {
 				params.append(",?");
 			}
 			procedure = join(procedure, "(", params, ")");
-
+			
 			cnx = sessionFactory.getSessionFactoryOptions().getServiceRegistry()
 					.getService(ConnectionProvider.class).getConnection();
+	        
+			procedureUtil.setCnx(cnx);
 			
 			CallableStatement cst = cnx.prepareCall(procedure);
 			setParametersToSP( cst, procedureUtil);
 			cst.execute();
 			processOutParams( cst, procedureUtil );
 			
-			cnx.close();
 		} catch (Exception e) {
 			throw new DataBaseException(1, e.getMessage());
-		}
+		} 
 	}
 
 	@Override

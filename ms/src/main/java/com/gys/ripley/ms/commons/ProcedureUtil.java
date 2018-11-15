@@ -1,8 +1,13 @@
 package com.gys.ripley.ms.commons;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.gys.ripley.commons.exception.CommonsException;
+import com.gys.ripley.ms.exception.DataBaseException;
 
 import static com.gys.ripley.commons.FunctionsUtil.*;
 
@@ -12,6 +17,7 @@ public class ProcedureUtil {
 	private List<ProcedureParams> procedureParamsOut;
 	private List<ProcedureParams> procedureParamsIn;
 	private ProcedureParams procedureParamCursor;
+	private Connection cnx;
 	
 	public ProcedureUtil(String procedureName) {
 		this.procedureName = procedureName;
@@ -103,6 +109,22 @@ public class ProcedureUtil {
 
 	public void setProcedureParamCursor(ProcedureParams procedureParamCursor) {
 		this.procedureParamCursor = procedureParamCursor;
+	}
+
+	public Connection getCnx() {
+		return cnx;
+	}
+
+	public void setCnx(Connection cnx) {
+		this.cnx = cnx;
+	}
+	
+	public void closeSession() throws DataBaseException{
+		try {
+			this.cnx.close();
+		} catch (SQLException e) {
+			new DataBaseException(e.getErrorCode(), e.getMessage());
+		}
 	}
 	
 }
