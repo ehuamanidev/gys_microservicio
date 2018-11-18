@@ -10,10 +10,9 @@ public class CommonsException extends Exception{
 	private Integer cod;
 	private String message;
 	
-	public CommonsException( ErrorMessages err, Exception ex ) {
+	public CommonsException( ErrorMessages err ) {
 		this.setCod(err.getErrorCode());
 		this.setMessage(err.getErrorMessage());
-		this.setEx(ex);
 	}
 	
 	public CommonsException( Integer cod, Exception ex ) {

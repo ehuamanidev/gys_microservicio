@@ -39,15 +39,9 @@ public class ManifiestoController extends BaseController  {
 					method = RequestMethod.POST, 
 					produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ManifiestoDTO listaPlanAccion(@RequestBody ManifiestoDTO dto, HttpServletResponse response,
-			HttpServletRequest request){
+			HttpServletRequest request) throws DataBaseException{
 		
-		try {
 			return manifiestoService.crearManifiesto(dto);
-		} catch ( DataBaseException e ) {
-			dto.errorException(e.getCod(), e.getMessage());
-		}
-		
-		return dto;
 	}
 	
 	
@@ -58,15 +52,11 @@ public class ManifiestoController extends BaseController  {
 			@ApiResponse(code = 404, message = SwaggerApiMessages.MESSAGE_404) })
 	@RequestMapping(value = "/manifiesto_sel/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ManifiestoListOutRO listManifiestoOutRO(@RequestBody ManifiestoInRO dto, HttpServletResponse response,
-			HttpServletRequest request){
+			HttpServletRequest request) throws DataBaseException{
 		
 		ManifiestoListOutRO manifiesto = new ManifiestoListOutRO();
 		
-		try {
-			manifiesto = manifiestoService.selManifiesto(dto);
-		} catch ( DataBaseException e ) {
-			manifiesto.errorException(e.getCod(), e.getMessage());
-		}
+		manifiesto = manifiestoService.selManifiesto(dto);
 		
 		return manifiesto;
 	}

@@ -24,11 +24,11 @@ public class ReflectionUtil {
 			field.setAccessible(accesible);
 
 		} catch (SecurityException e) {
-			throw new CommonsException(ErrorMessages.FIELD_NOT_PERMISSION, e);
+			throw new CommonsException(ErrorMessages.FIELD_NOT_PERMISSION);
 		} catch (IllegalArgumentException e) {
-			throw new CommonsException(ErrorMessages.FIELD_ILLEGAL_ARGUMENT, e);
+			throw new CommonsException(ErrorMessages.FIELD_ILLEGAL_ARGUMENT);
 		} catch (IllegalAccessException e) {
-			throw new CommonsException(ErrorMessages.FIELD_ILLEGAL_ACCESS, e);
+			throw new CommonsException(ErrorMessages.FIELD_ILLEGAL_ACCESS);
 		}
 
 	}
@@ -43,7 +43,7 @@ public class ReflectionUtil {
 			} catch (Exception e) { }
 		} while ((current = current.getSuperclass()) != null);
 		
-		throw new CommonsException( ErrorMessages.FIELD_NOT_FOUND , new NoSuchFieldException());
+		throw new CommonsException( ErrorMessages.FIELD_NOT_FOUND);
 	}
 
 }

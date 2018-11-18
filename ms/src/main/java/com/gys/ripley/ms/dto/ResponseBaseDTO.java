@@ -10,7 +10,11 @@ public class ResponseBaseDTO {
 		errorException( NO_ERROR , "" );
 	}
 	
-	public void errorException( Integer pErrCode,  String pErrMsg) {
+	public ResponseBaseDTO(Integer pErrCode,  String pErrMsg) {
+		errorException( pErrCode,  pErrMsg );
+	}
+	
+	public void errorException( Integer pErrCode,  String pErrMsg ) {
 		this.pErrCode = pErrCode;
 		this.pErrMsg = pErrMsg;
 	}
