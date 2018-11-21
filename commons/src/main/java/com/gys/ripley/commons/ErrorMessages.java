@@ -8,7 +8,8 @@ public enum ErrorMessages {
 	FIELD_NOT_PERMISSION(100001, "Sin permisos para acceder al campo"),
 	FIELD_ILLEGAL_ARGUMENT(100002, "Argumento no valido para la asignación del valor"),
 	FIELD_ILLEGAL_ACCESS(100002, "Argumento no valido para el acceso del valor"),
-	CONSTANT_CLASS_NOT_INSTANCE(100003, "Clase {0} no se debe instanciar");
+	CONSTANT_CLASS_NOT_INSTANCE(100003, "Clase {0} no se debe instanciar"),
+	DATA_BASE_ERROR(200000, "Database, error no controlado");
 	
 	
 	private int errorCode;
