@@ -15,11 +15,11 @@ import javax.persistence.StoredProcedureQuery;
 
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.gys.ripley.commons.ErrorMessages;
 import com.gys.ripley.ms.commons.MsConfig;
 import com.gys.ripley.ms.commons.ProcedureParams;
 import com.gys.ripley.ms.commons.ProcedureUtil;
@@ -48,7 +48,7 @@ public abstract class GenericDAOImpl implements GenericDAO {
 			processOutParams(query, procedureUtil);
 
 		} catch (Exception e) {
-			throw new DataBaseException(1, e.getMessage());
+			throw new DataBaseException(ErrorMessages.DATA_BASE_ERROR.getErrorCode(), e.getMessage());
 		}
 	}
 
@@ -69,15 +69,18 @@ public abstract class GenericDAOImpl implements GenericDAO {
 			cnx = sessionFactory.getSessionFactoryOptions().getServiceRegistry()
 					.getService(ConnectionProvider.class).getConnection();
 	        
-			procedureUtil.setCnx(cnx);
+			
 			
 			CallableStatement cst = cnx.prepareCall(procedure);
 			setParametersToSP( cst, procedureUtil);
 			cst.execute();
 			processOutParams( cst, procedureUtil );
 			
+			procedureUtil.setConnectionParams( cnx, cst );
+			
 		} catch (Exception e) {
-			throw new DataBaseException(1, e.getMessage());
+			procedureUtil.closeSession();
+			throw new DataBaseException(ErrorMessages.DATA_BASE_ERROR.getErrorCode(), e.getMessage());
 		} 
 	}
 
@@ -96,7 +99,7 @@ public abstract class GenericDAOImpl implements GenericDAO {
 			return query.list();
 
 		} catch (Exception e) {
-			throw new DataBaseException(1, e.getMessage());
+			throw new DataBaseException(ErrorMessages.DATA_BASE_ERROR.getErrorCode(), e.getMessage());
 		}
 	}
 
@@ -111,7 +114,7 @@ public abstract class GenericDAOImpl implements GenericDAO {
 			}
 			query.executeUpdate();
 		} catch (Exception e) {
-			throw new DataBaseException(1, e.getMessage());
+			throw new DataBaseException(ErrorMessages.DATA_BASE_ERROR.getErrorCode(), e.getMessage());
 		}
 	}
 

@@ -1,5 +1,6 @@
 package com.gys.ripley.ms.commons;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +18,7 @@ public class ProcedureUtil {
 	private List<ProcedureParams> procedureParamsOut;
 	private List<ProcedureParams> procedureParamsIn;
 	private ProcedureParams procedureParamCursor;
+	private CallableStatement cst;
 	private Connection cnx;
 	
 	public ProcedureUtil(String procedureName) {
@@ -111,6 +113,11 @@ public class ProcedureUtil {
 		this.procedureParamCursor = procedureParamCursor;
 	}
 
+	public void setConnectionParams(Connection cnx, CallableStatement cst) {
+		setCnx(cnx);
+		setCst(cst);
+	}
+	
 	public Connection getCnx() {
 		return cnx;
 	}
@@ -120,11 +127,32 @@ public class ProcedureUtil {
 	}
 	
 	public void closeSession() throws DataBaseException{
+		
+		SQLException ex = null;
+		
+		try {
+			this.cst.close();
+		} catch (SQLException e) {
+			ex = e;
+		}
+		
 		try {
 			this.cnx.close();
 		} catch (SQLException e) {
-			new DataBaseException(e.getErrorCode(), e.getMessage());
+			ex = e;
 		}
+		
+		if(!isEmpty(ex) ) {
+			new DataBaseException(ex.getErrorCode(), ex.getMessage());
+		}
+	}
+
+	public CallableStatement getCst() {
+		return cst;
+	}
+
+	public void setCst(CallableStatement cst) {
+		this.cst = cst;
 	}
 	
 }
