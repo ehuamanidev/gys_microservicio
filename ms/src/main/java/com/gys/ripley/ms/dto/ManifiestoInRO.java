@@ -4,6 +4,7 @@ public class ManifiestoInRO {
 	private String piTipEjecucion;
 	private Long piManifiesto;
 	private Long piTransporte;
+	private Integer tipoDato;
 	
 	public String getPiTipEjecucion() {
 		return piTipEjecucion;
@@ -22,6 +23,12 @@ public class ManifiestoInRO {
 	}
 	public void setPiTransporte(Long piTransporte) {
 		this.piTransporte = piTransporte;
+	}
+	public Integer getTipoDato() {
+		return tipoDato;
+	}
+	public void setTipoDato(Integer tipoDato) {
+		this.tipoDato = tipoDato;
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class ManifiestoListOutRO extends ResponseBaseDTO{
 	
+	private Integer outData;
 	private List<ManifiestoOutRO> manifiestos;
 	
 	public ManifiestoListOutRO() {
@@ -19,6 +20,14 @@ public class ManifiestoListOutRO extends ResponseBaseDTO{
 
 	public void setManifiestos(List<ManifiestoOutRO> manifiestos) {
 		this.manifiestos = manifiestos;
+	}
+
+	public Integer getOutData() {
+		return outData;
+	}
+
+	public void setOutData(Integer outData) {
+		this.outData = outData;
 	}
 	
 }

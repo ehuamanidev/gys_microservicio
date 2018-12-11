@@ -11,4 +11,6 @@ public interface ManifiestoDAO {
 	
 	public ManifiestoListOutRO manifiestoSel(ManifiestoInRO manifiestoIn) throws DataBaseException;
 	
+	public void terminarSesion(ManifiestoInRO manifiestoIn) throws DataBaseException;
+	
 }

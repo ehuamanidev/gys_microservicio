@@ -245,15 +245,15 @@ public abstract class GenericDAOImpl implements GenericDAO {
 
 		for (ProcedureParams pp : paramsOut) {
 
-			if (pp.getValue() instanceof String) {
+			if (pp.getClazz().equals(String.class)) {
 				cst.registerOutParameter(pp.getParamName(), OracleTypes.VARCHAR);
 			}
 
-			if (pp.getValue() instanceof Integer) {
+			if (pp.getClazz().equals(Integer.class)) {
 				cst.registerOutParameter(pp.getParamName(), OracleTypes.INTEGER);
 			}
 
-			if (pp.getValue() instanceof Long) {
+			if (pp.getClazz().equals(Long.class)) {
 				cst.registerOutParameter(pp.getParamName(), OracleTypes.INTEGER);
 			}
 		}
@@ -285,15 +285,15 @@ public abstract class GenericDAOImpl implements GenericDAO {
 
 		for (ProcedureParams pp : paramsOut) {
 
-			if (pp.getValue() instanceof String) {
+			if (pp.getClazz().equals(String.class)) {
 				cst.registerOutParameter(pp.getParameterOrder(), OracleTypes.VARCHAR);
 			}
 
-			if (pp.getValue() instanceof Integer) {
+			if (pp.getClazz().equals(Integer.class)) {
 				cst.registerOutParameter(pp.getParameterOrder(), OracleTypes.INTEGER);
 			}
 
-			if (pp.getValue() instanceof Long) {
+			if (pp.getClazz().equals(Long.class)) {
 				cst.registerOutParameter(pp.getParameterOrder(), OracleTypes.INTEGER);
 			}
 		}

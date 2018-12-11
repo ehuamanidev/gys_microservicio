@@ -25,4 +25,8 @@ public class ManifiestoServiceImpl implements ManifiestoService{
 	public ManifiestoListOutRO selManifiesto(ManifiestoInRO dto) throws DataBaseException{
 		return manifiestoDao.manifiestoSel(dto);
 	}
+	
+	public void terminarSesion(ManifiestoInRO manifiestoIn) throws DataBaseException{
+		manifiestoDao.terminarSesion(manifiestoIn);
+	}
 }

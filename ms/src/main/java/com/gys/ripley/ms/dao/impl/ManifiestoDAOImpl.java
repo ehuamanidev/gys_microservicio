@@ -29,8 +29,8 @@ public class ManifiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO {
 
 		try {
 
-			ProcedureUtil pu = new ProcedureUtil( MsConfig.PRC_ES_MANIFIESTO.getValue() );
-			
+			ProcedureUtil pu = new ProcedureUtil(MsConfig.PRC_ES_MANIFIESTO.getValue());
+
 			pu.addParamProcedureInt(dto.getpSucOrigId(), IN, Double.class, 1);
 			pu.addParamProcedureInt(dto.getpSucDestId(), IN, Double.class, 2);
 			pu.addParamProcedureInt(dto.getpTranspId(), IN, Double.class, 3);
@@ -42,7 +42,7 @@ public class ManifiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO {
 			pu.addParamProcedureOut(dto.getpErrMsg(), OUT, String.class, 9, "pErrMsg");
 
 			ejecutarProcedimiento(pu);
-			
+
 			manifiestoFacade.populateManifiestoDTO(dto, pu);
 
 		} catch (CommonsException e) {
@@ -57,25 +57,40 @@ public class ManifiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO {
 
 		ManifiestoFacade manifiestoFacade = new ManifiestoFacade();
 		ManifiestoListOutRO outRo = new ManifiestoListOutRO();
-		
+
 		try {
-			
+
 			ProcedureUtil pu = new ProcedureUtil(MsConfig.PRC_MANIFIESTO_SEL.getValue());
-			pu.addParamProcedureInt(manifiestoIn.getPiTipEjecucion() , IN, String.class, "PI_TIP_EJECUCION");
+			pu.addParamProcedureInt(manifiestoIn.getPiTipEjecucion(), IN, String.class, "PI_TIP_EJECUCION");
 			pu.addParamProcedureInt(manifiestoIn.getPiManifiesto(), IN, Long.class, "PI_MANIFIESTO");
 			pu.addParamProcedureInt(manifiestoIn.getPiTransporte(), IN, Long.class, "PI_TRANSPORTE");
-			pu.addParamProcedureCursor(outRo.getManifiestos() , CURSOR, Class.class, "PO_RETORNO");
-			pu.addParamProcedureOut( outRo.getpErrCode(), OUT, Integer.class, "PO_COD_ERROR", "pErrCode");
-			pu.addParamProcedureOut( outRo.getpErrMsg(), OUT, String.class, "PO_MSG_ERROR", "pErrMsg");
-			
-			ejecutarProcedimientoConCursor( pu );
-			manifiestoFacade.populateManifiestoOutRO( outRo, pu );
+			pu.addParamProcedureCursor(outRo.getManifiestos(), CURSOR, Class.class, "PO_RETORNO");
+			pu.addParamProcedureOut(outRo.getpErrCode(), OUT, Integer.class, "PO_COD_ERROR", "pErrCode");
+			pu.addParamProcedureOut(outRo.getpErrMsg(), OUT, String.class, "PO_MSG_ERROR", "pErrMsg");
+
+			ejecutarProcedimientoConCursor(pu);
+			manifiestoFacade.populateManifiestoOutRO(outRo, pu);
 
 		} catch (CommonsException e) {
 			throw new DataBaseException(e.getCod(), e.getMessage());
 		}
 
 		return outRo;
+	}
+
+	@Override
+	public void terminarSesion(ManifiestoInRO manifiestoIn) throws DataBaseException {
+
+		ManifiestoListOutRO outRo = new ManifiestoListOutRO();
+		
+		ProcedureUtil pu = new ProcedureUtil(MsConfig.PRC_VALIDAR_TERMINAR_SESION.getValue());
+		pu.addParamProcedureInt(manifiestoIn.getTipoDato(), IN, Integer.class, "PI_SESION_ID");
+		pu.addParamProcedureOut(outRo.getOutData(), OUT, Integer.class, "PO_CNT_ERROR", "outData");
+		pu.addParamProcedureCursor(outRo.getManifiestos(), CURSOR, Class.class, "PO_RETORNO");
+		pu.addParamProcedureOut(outRo.getpErrCode(), OUT, Integer.class, "PO_COD_ERROR", "pErrCode");
+		pu.addParamProcedureOut(outRo.getpErrMsg(), OUT, String.class, "PO_MSG_ERROR", "pErrMsg");
+
+		ejecutarProcedimientoConCursor(pu);
 	}
 
 }

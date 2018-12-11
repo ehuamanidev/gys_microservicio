@@ -60,4 +60,20 @@ public class ManifiestoController extends BaseController  {
 		
 		return manifiesto;
 	}
+	
+	@ApiOperation(value = "Permite cerrar una manifiesto.", response = Void.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Información obtenida con éxito"),
+			@ApiResponse(code = 400, message = SwaggerApiMessages.MESSAGE_400),
+			@ApiResponse(code = 401, message = SwaggerApiMessages.MESSAGE_401),
+			@ApiResponse(code = 404, message = SwaggerApiMessages.MESSAGE_404) })
+	@RequestMapping(value = "/cerrar_sesion/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ManifiestoListOutRO cerrarSesion(@RequestBody ManifiestoInRO dto, HttpServletResponse response,
+			HttpServletRequest request) throws DataBaseException{
+		
+		ManifiestoListOutRO manifiesto = new ManifiestoListOutRO();
+		
+		manifiestoService.terminarSesion(dto);
+		
+		return manifiesto;
+	}
 }

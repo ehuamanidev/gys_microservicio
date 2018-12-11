@@ -26,3 +26,8 @@ ms/src/test/\.DS_Store
 ms/src/main/\.DS_Store
 
 \.DS_Store
+/.metadata/
+
+\.recommenders/
+
+RemoteSystemsTempFiles/

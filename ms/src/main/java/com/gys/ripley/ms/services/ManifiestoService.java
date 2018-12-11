@@ -10,4 +10,6 @@ public interface ManifiestoService {
 	public ManifiestoDTO crearManifiesto(ManifiestoDTO dto) throws DataBaseException;
 	
 	public ManifiestoListOutRO selManifiesto(ManifiestoInRO dto) throws DataBaseException;
+	
+	public void terminarSesion(ManifiestoInRO manifiestoIn) throws DataBaseException;
 }
