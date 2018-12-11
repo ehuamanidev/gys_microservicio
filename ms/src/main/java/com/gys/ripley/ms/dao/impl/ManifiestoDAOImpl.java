@@ -6,11 +6,14 @@ import com.gys.ripley.commons.exception.CommonsException;
 import com.gys.ripley.ms.commons.MsConfig;
 import com.gys.ripley.ms.commons.ProcedureUtil;
 import com.gys.ripley.ms.dao.ManifiestoDAO;
+import com.gys.ripley.ms.dto.ListaSesionOutRO;
 import com.gys.ripley.ms.dto.ManifiestoDTO;
 import com.gys.ripley.ms.dto.ManifiestoInRO;
 import com.gys.ripley.ms.dto.ManifiestoListOutRO;
+import com.gys.ripley.ms.dto.SesionInRO;
 import com.gys.ripley.ms.exception.DataBaseException;
 import com.gys.ripley.ms.facade.ManifiestoFacade;
+import com.gys.ripley.ms.facade.SessionFacade;
 
 import static com.gys.ripley.ms.commons.ProcedureParams.*;
 
@@ -79,18 +82,26 @@ public class ManifiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO {
 	}
 
 	@Override
-	public void terminarSesion(ManifiestoInRO manifiestoIn) throws DataBaseException {
+	public ListaSesionOutRO terminarSesion(SesionInRO sessionInRO) throws DataBaseException {
 
-		ManifiestoListOutRO outRo = new ManifiestoListOutRO();
-		
-		ProcedureUtil pu = new ProcedureUtil(MsConfig.PRC_VALIDAR_TERMINAR_SESION.getValue());
-		pu.addParamProcedureInt(manifiestoIn.getTipoDato(), IN, Integer.class, "PI_SESION_ID");
-		pu.addParamProcedureOut(outRo.getOutData(), OUT, Integer.class, "PO_CNT_ERROR", "outData");
-		pu.addParamProcedureCursor(outRo.getManifiestos(), CURSOR, Class.class, "PO_RETORNO");
-		pu.addParamProcedureOut(outRo.getpErrCode(), OUT, Integer.class, "PO_COD_ERROR", "pErrCode");
-		pu.addParamProcedureOut(outRo.getpErrMsg(), OUT, String.class, "PO_MSG_ERROR", "pErrMsg");
+		SessionFacade sessionfacade = new SessionFacade();
+		ListaSesionOutRO outRo = new ListaSesionOutRO();
 
-		ejecutarProcedimientoConCursor(pu);
+		try {
+			ProcedureUtil pu = new ProcedureUtil(MsConfig.PRC_VALIDAR_TERMINAR_SESION.getValue());
+			pu.addParamProcedureInt(sessionInRO.getPiSessionId(), IN, Integer.class, "PI_SESION_ID");
+			pu.addParamProcedureOut(outRo.getPoCntError(), OUT, Integer.class, "PO_CNT_ERROR", "poCntError");
+			pu.addParamProcedureCursor(outRo.getSesiones(), CURSOR, Class.class, "PO_RETORNO");
+			pu.addParamProcedureOut(outRo.getpErrCode(), OUT, Integer.class, "PO_COD_ERROR", "pErrCode");
+			pu.addParamProcedureOut(outRo.getpErrMsg(), OUT, String.class, "PO_MSG_ERROR", "pErrMsg");
+
+			ejecutarProcedimientoConCursor(pu);
+			sessionfacade.populateManifiestoOutRO(outRo, pu);
+
+		} catch (CommonsException e) {
+			throw new DataBaseException(e.getCod(), e.getMessage());
+		}
+		return outRo;
 	}
 
 }

@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gys.ripley.commons.SwaggerApiMessages;
+import com.gys.ripley.ms.dto.ListaSesionOutRO;
 import com.gys.ripley.ms.dto.ManifiestoDTO;
 import com.gys.ripley.ms.dto.ManifiestoInRO;
 import com.gys.ripley.ms.dto.ManifiestoListOutRO;
+import com.gys.ripley.ms.dto.SesionInRO;
 import com.gys.ripley.ms.exception.DataBaseException;
 import com.gys.ripley.ms.services.ManifiestoService;
 
@@ -61,19 +63,19 @@ public class ManifiestoController extends BaseController  {
 		return manifiesto;
 	}
 	
-	@ApiOperation(value = "Permite cerrar una manifiesto.", response = Void.class)
+	@ApiOperation(value = "Permite cerrar una manifiesto.", response = ListaSesionOutRO.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Información obtenida con éxito"),
 			@ApiResponse(code = 400, message = SwaggerApiMessages.MESSAGE_400),
 			@ApiResponse(code = 401, message = SwaggerApiMessages.MESSAGE_401),
 			@ApiResponse(code = 404, message = SwaggerApiMessages.MESSAGE_404) })
 	@RequestMapping(value = "/cerrar_sesion/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ManifiestoListOutRO cerrarSesion(@RequestBody ManifiestoInRO dto, HttpServletResponse response,
+	public ListaSesionOutRO cerrarSesion(@RequestBody SesionInRO dto, HttpServletResponse response,
 			HttpServletRequest request) throws DataBaseException{
 		
-		ManifiestoListOutRO manifiesto = new ManifiestoListOutRO();
+		ListaSesionOutRO listaSesion = new ListaSesionOutRO();
 		
-		manifiestoService.terminarSesion(dto);
+		listaSesion = manifiestoService.terminarSesion(dto);
 		
-		return manifiesto;
+		return listaSesion;
 	}
 }
