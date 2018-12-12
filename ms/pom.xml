@@ -142,11 +142,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.jboss.ironjacamar</groupId>
-			<artifactId>ironjacamar-jdbc</artifactId>
-			<version>1.0.31.Final</version>
-		</dependency>
-		<dependency>
 			<groupId>javax.jms</groupId>
 			<artifactId>javax.jms-api</artifactId>
 			<version>${javaxjms}</version>
@@ -222,6 +217,11 @@
 		</dependency>
 
 
+<dependency>
+    <groupId>org.jboss.ironjacamar</groupId>
+    <artifactId>ironjacamar-jdbc</artifactId>
+    <version>1.1.9.Final</version>
+</dependency>
 	</dependencies>
 
 	<build>

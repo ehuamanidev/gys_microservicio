@@ -74,7 +74,7 @@ public class AppDaoConfig {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
 
-	@Bean
+	@Bean(name="ds")
 	DataSource sigesDS() throws MsException {
 
 		DataSource dataSource = null;

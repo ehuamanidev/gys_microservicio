@@ -4,6 +4,7 @@ import static com.gys.ripley.commons.FunctionsUtil.*;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
+import javax.sql.DataSource;
 
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
@@ -24,8 +26,10 @@ import com.gys.ripley.ms.commons.MsConfig;
 import com.gys.ripley.ms.commons.ProcedureParams;
 import com.gys.ripley.ms.commons.ProcedureUtil;
 import com.gys.ripley.ms.dao.GenericDAO;
+import com.gys.ripley.ms.dto.SesionOutRO;
 import com.gys.ripley.ms.exception.DataBaseException;
 
+import oracle.jdbc.OracleCallableStatement;
 import oracle.jdbc.OracleTypes;
 
 public abstract class GenericDAOImpl implements GenericDAO {
@@ -35,6 +39,9 @@ public abstract class GenericDAOImpl implements GenericDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	@Autowired
+	public DataSource ds;
 
 	@Override
 	public void ejecutarProcedimiento(ProcedureUtil procedureUtil) throws DataBaseException {
@@ -66,10 +73,8 @@ public abstract class GenericDAOImpl implements GenericDAO {
 			}
 			procedure = join(procedure, "(", params, ")");
 			
-			cnx = sessionFactory.getSessionFactoryOptions().getServiceRegistry()
-					.getService(ConnectionProvider.class).getConnection();
-	        
-			
+			cnx = ds.getConnection();
+			cnx.setAutoCommit(false);
 			
 			CallableStatement cst = cnx.prepareCall(procedure);
 			setParametersToSP( cst, procedureUtil);
@@ -79,6 +84,13 @@ public abstract class GenericDAOImpl implements GenericDAO {
 			procedureUtil.setConnectionParams( cnx, cst );
 			
 		} catch (Exception e) {
+			
+			try {
+				cnx.rollback();
+			} catch (SQLException e1) {
+				throw new DataBaseException(ErrorMessages.DATA_BASE_ERROR.getErrorCode(), e.getMessage());
+			}
+			
 			procedureUtil.closeSession();
 			throw new DataBaseException(ErrorMessages.DATA_BASE_ERROR.getErrorCode(), e.getMessage());
 		} 
@@ -166,7 +178,7 @@ public abstract class GenericDAOImpl implements GenericDAO {
 		
 		
 		if( procedureUtil.hasCursor() ) {
-			processOutParams(cst, procedureUtil.getProcedureParamCursor());
+			processCursorParams(cst, procedureUtil.getProcedureParamCursor());
 		}
 		
 	}
@@ -183,6 +195,18 @@ public abstract class GenericDAOImpl implements GenericDAO {
 		
 	}
 	
+	
+	private void processCursorParams( CallableStatement cst, ProcedureParams pp ) throws SQLException {
+		
+		ResultSet rs;
+		
+		if( isEmpty(pp.getParamName()) ) {
+			pp.setValue( (ResultSet) cst.getObject(pp.getParameterOrder()) );
+			return;
+		}
+		
+		pp.setValue( (ResultSet) cst.getObject( pp.getParamName() ) );
+	}
 
 	private void setParametersToSP(StoredProcedureQuery q, List<ProcedureParams> paramsIn,
 			List<ProcedureParams> paramsOut) {
@@ -293,7 +317,7 @@ public abstract class GenericDAOImpl implements GenericDAO {
 				cst.registerOutParameter(pp.getParameterOrder(), OracleTypes.INTEGER);
 			}
 
-			if (pp.getClazz().equals(Long.class)) {
+			if (pp.getClass().equals(Long.class)) {
 				cst.registerOutParameter(pp.getParameterOrder(), OracleTypes.INTEGER);
 			}
 		}

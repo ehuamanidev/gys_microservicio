@@ -41,7 +41,7 @@ public class SessionFacade {
 					return listaSessionOutRO;
 				}
 
-				while ( rs.next()) {
+				while ( rs.next() ) {
 					SesionOutRO moro = new SesionOutRO();
 					moro.setMensaje( toStr(rs.getString("MENSAJE")) );
 					sessionListOutRO.add(moro);
