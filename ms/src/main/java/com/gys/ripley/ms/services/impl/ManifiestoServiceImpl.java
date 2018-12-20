@@ -10,6 +10,7 @@ import com.gys.ripley.ms.dto.ManifiestoDTO;
 import com.gys.ripley.ms.dto.ManifiestoInRO;
 import com.gys.ripley.ms.dto.ManifiestoListOutRO;
 import com.gys.ripley.ms.dto.SesionInRO;
+import com.gys.ripley.ms.dto.SolicitudSucInRO;
 import com.gys.ripley.ms.exception.DataBaseException;
 import com.gys.ripley.ms.services.ManifiestoService;
 
@@ -30,5 +31,9 @@ public class ManifiestoServiceImpl implements ManifiestoService{
 	
 	public ListaSesionOutRO terminarSesion(SesionInRO sessionInRO) throws DataBaseException{
 		return manifiestoDao.terminarSesion( sessionInRO );
+	}
+	
+	public ListaSesionOutRO solicitudSuc(SolicitudSucInRO manifiestoIn) throws DataBaseException{
+		return manifiestoDao.solicitudSuc( manifiestoIn );
 	}
 }

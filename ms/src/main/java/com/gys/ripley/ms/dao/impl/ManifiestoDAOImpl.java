@@ -11,6 +11,7 @@ import com.gys.ripley.ms.dto.ManifiestoDTO;
 import com.gys.ripley.ms.dto.ManifiestoInRO;
 import com.gys.ripley.ms.dto.ManifiestoListOutRO;
 import com.gys.ripley.ms.dto.SesionInRO;
+import com.gys.ripley.ms.dto.SolicitudSucInRO;
 import com.gys.ripley.ms.exception.DataBaseException;
 import com.gys.ripley.ms.facade.ManifiestoFacade;
 import com.gys.ripley.ms.facade.SessionFacade;
@@ -91,6 +92,29 @@ public class ManifiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO {
 			ProcedureUtil pu = new ProcedureUtil(MsConfig.PRC_VALIDAR_TERMINAR_SESION.getValue());
 			pu.addParamProcedureInt(sessionInRO.getPiSessionId(), IN, Integer.class, "PI_SESION_ID");
 			pu.addParamProcedureOut(outRo.getPoCntError(), OUT, Integer.class, "PO_CNT_ERROR", "poCntError");
+			pu.addParamProcedureCursor(outRo.getSesiones(), CURSOR, Class.class, "PO_RETORNO");
+			pu.addParamProcedureOut(outRo.getpErrCode(), OUT, Integer.class, "PO_COD_ERROR", "pErrCode");
+			pu.addParamProcedureOut(outRo.getpErrMsg(), OUT, String.class, "PO_MSG_ERROR", "pErrMsg");
+
+			ejecutarProcedimientoConCursor(pu);
+			sessionfacade.populateManifiestoOutRO(outRo, pu);
+
+		} catch (CommonsException e) {
+			throw new DataBaseException(e.getCod(), e.getMessage());
+		}
+		return outRo;
+	}
+	
+	public ListaSesionOutRO solicitudSuc(SolicitudSucInRO manifiestoIn) throws DataBaseException{
+
+		SessionFacade sessionfacade = new SessionFacade();
+		ListaSesionOutRO outRo = new ListaSesionOutRO();
+
+		try {
+			ProcedureUtil pu = new ProcedureUtil(MsConfig.PRC_SOLICITUD_SUCDTN_SEL.getValue());
+			pu.addParamProcedureInt(manifiestoIn.getPiCodSucOre(), IN, Long.class, "PI_COD_SUC_ORE");
+			pu.addParamProcedureInt(manifiestoIn.getPiCodSucDtn(), IN, Long.class, "PI_COD_SUC_DTN");
+			pu.addParamProcedureInt(manifiestoIn.getPiNomSucDtn(), IN, String.class, "PI_NOM_SUC_DTN");
 			pu.addParamProcedureCursor(outRo.getSesiones(), CURSOR, Class.class, "PO_RETORNO");
 			pu.addParamProcedureOut(outRo.getpErrCode(), OUT, Integer.class, "PO_COD_ERROR", "pErrCode");
 			pu.addParamProcedureOut(outRo.getpErrMsg(), OUT, String.class, "PO_MSG_ERROR", "pErrMsg");

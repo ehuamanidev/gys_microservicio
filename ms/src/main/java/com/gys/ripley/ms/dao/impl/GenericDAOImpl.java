@@ -212,7 +212,7 @@ public abstract class GenericDAOImpl implements GenericDAO {
 			List<ProcedureParams> paramsOut) {
 
 		for (ProcedureParams pp : paramsIn) {
-
+			
 			if (isEmpty(pp.getParamName())) {
 				q.registerStoredProcedureParameter(pp.getParameterOrder(), pp.getClazz(), ParameterMode.IN);
 				q.setParameter(pp.getParameterOrder(), pp.getValue());
@@ -253,6 +253,10 @@ public abstract class GenericDAOImpl implements GenericDAO {
 
 		for (ProcedureParams pp : paramsIn) {
 
+			if( pp.getValue() == null ) {
+				cst.setNull( pp.getParamName(), OracleTypes.NULL );
+			}
+			
 			if (pp.getValue() instanceof String) {
 				cst.setString(pp.getParamName(), toStr(pp.getValue()));
 			}
@@ -293,6 +297,10 @@ public abstract class GenericDAOImpl implements GenericDAO {
 
 		for (ProcedureParams pp : paramsIn) {
 
+			if( pp.getValue() == null ) {
+				cst.setNull( pp.getParameterOrder(), OracleTypes.NULL );
+			}
+			
 			if (pp.getValue() instanceof String) {
 				cst.setString(pp.getParameterOrder(), toStr(pp.getValue()));
 			}

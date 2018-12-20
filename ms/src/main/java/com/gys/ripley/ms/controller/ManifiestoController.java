@@ -15,6 +15,7 @@ import com.gys.ripley.ms.dto.ManifiestoDTO;
 import com.gys.ripley.ms.dto.ManifiestoInRO;
 import com.gys.ripley.ms.dto.ManifiestoListOutRO;
 import com.gys.ripley.ms.dto.SesionInRO;
+import com.gys.ripley.ms.dto.SolicitudSucInRO;
 import com.gys.ripley.ms.exception.DataBaseException;
 import com.gys.ripley.ms.services.ManifiestoService;
 
@@ -75,6 +76,23 @@ public class ManifiestoController extends BaseController  {
 		ListaSesionOutRO listaSesion = new ListaSesionOutRO();
 		
 		listaSesion = manifiestoService.terminarSesion(dto);
+		
+		return listaSesion;
+	}
+	
+	
+	@ApiOperation(value = "Prueba solicitud SUC.", response = ListaSesionOutRO.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Información obtenida con éxito"),
+			@ApiResponse(code = 400, message = SwaggerApiMessages.MESSAGE_400),
+			@ApiResponse(code = 401, message = SwaggerApiMessages.MESSAGE_401),
+			@ApiResponse(code = 404, message = SwaggerApiMessages.MESSAGE_404) })
+	@RequestMapping(value = "/solicitud_suc/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ListaSesionOutRO solicitudSuc(@RequestBody SolicitudSucInRO dto, HttpServletResponse response,
+			HttpServletRequest request) throws DataBaseException{
+		
+		ListaSesionOutRO listaSesion = new ListaSesionOutRO();
+		
+		listaSesion = manifiestoService.solicitudSuc( dto );
 		
 		return listaSesion;
 	}
