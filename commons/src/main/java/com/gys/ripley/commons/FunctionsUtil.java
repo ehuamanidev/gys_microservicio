@@ -245,5 +245,28 @@ public class FunctionsUtil {
         }
         return false;
     }
+    
+    public static boolean isInClasses( Class<?> source,  Class<?>... target) {
+    	
+    	if( isEmpty(source) ) {
+    		return false;
+    	}
+    	
+    	if( isEmpty(target) ) {
+    		return false;
+    	}
+    	
+    	boolean isInClass = false;
+    	
+    	for( Class<?> clazz: target ) {
+    		if( source.equals(clazz) ) {
+    			isInClass = true;
+    			break;
+    		}
+    	}
+    	
+    	return isInClass;
+    	
+    }
 	
 }

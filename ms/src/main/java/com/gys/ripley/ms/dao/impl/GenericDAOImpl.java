@@ -254,7 +254,7 @@ public abstract class GenericDAOImpl implements GenericDAO {
 		for (ProcedureParams pp : paramsIn) {
 
 			if( pp.getValue() == null ) {
-				cst.setNull( pp.getParamName(), OracleTypes.NULL );
+				cst.setNull( pp.getParamName(), getOracleType( pp.getClazz() ) );
 			}
 			
 			if (pp.getValue() instanceof String) {
@@ -298,7 +298,7 @@ public abstract class GenericDAOImpl implements GenericDAO {
 		for (ProcedureParams pp : paramsIn) {
 
 			if( pp.getValue() == null ) {
-				cst.setNull( pp.getParameterOrder(), OracleTypes.NULL );
+				cst.setNull( pp.getParameterOrder(), getOracleType( pp.getClazz() ) );
 			}
 			
 			if (pp.getValue() instanceof String) {
@@ -334,5 +334,17 @@ public abstract class GenericDAOImpl implements GenericDAO {
 			cst.registerOutParameter(cursor.getParameterOrder(), OracleTypes.CURSOR);
 		}
 
+	}
+	
+	private int getOracleType( Class<?> clazz) {
+		if( clazz.equals(String.class) ) {
+			return OracleTypes.NVARCHAR;
+		}
+		
+		if(  isInClasses( clazz , Long.class, Integer.class, Double.class) ) {
+			return OracleTypes.NUMBER;
+		}
+		
+		return OracleTypes.NULL;
 	}
 }
