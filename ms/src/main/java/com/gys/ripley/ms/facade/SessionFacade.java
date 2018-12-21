@@ -43,7 +43,7 @@ public class SessionFacade {
 
 				while ( rs.next() ) {
 					SesionOutRO moro = new SesionOutRO();
-					moro.setMensaje( toStr(rs.getString("MENSAJE")) );
+					moro.setMensaje( toStr(rs.getLong("RFESD_COD_SUC_DTN")) );
 					sessionListOutRO.add(moro);
 				}
 				
